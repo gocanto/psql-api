@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Gocanto\PSQL\Http\Controllers\Cars;
 
 use Gocanto\PSQL\Repository\CarsRepository;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Laminas\Diactoros\Response\JsonResponse;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 final class IndexController
 {
@@ -13,8 +15,11 @@ final class IndexController
     {
     }
 
-    public function handle(): JsonResponse
+    public function __invoke(ServerRequestInterface $request): ResponseInterface
     {
-        return new JsonResponse($this->cars->all());
+        return new JsonResponse([
+            'cars' => $this->cars->all(),
+            $request->getQueryParams(),
+        ]);
     }
 }

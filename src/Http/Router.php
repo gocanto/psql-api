@@ -5,29 +5,29 @@ declare(strict_types=1);
 namespace Gocanto\PSQL\Http;
 
 use Gocanto\PSQL\Http\Controllers\Cars\IndexController;
-use Phroute\Phroute\RouteCollector;
-use Phroute\Phroute\RouteDataArray;
+use Laminas\Diactoros\ServerRequest;
+use Laminas\HttpHandlerRunner\Emitter\SapiEmitter;
+use League\Route\Router as LeagueRouter;
+use League\Route\Strategy\ApplicationStrategy;
 
 final class Router
 {
-    public function __construct(private RouteCollector $collector)
+    public function __construct(private LeagueRouter $router, ApplicationStrategy $strategy)
     {
+        $this->router->setStrategy($strategy);
+
         $this->registerCarsRoutes();
     }
 
     private function registerCarsRoutes(): void
     {
-        $this->collector->group(['prefix' => 'api'], function (RouteCollector $router) {
-            $router->get('/', function() {
-                return 'This route responds to any method (POST, GET, DELETE etc...) at the URI /example';
-            });
-
-            $router->get('/cars', [IndexController::class, 'handle']);
-        });
+        $this->router->map('GET', '/cars', IndexController::class);
     }
 
-    public function getData(): RouteDataArray
+    public function dispatch(ServerRequest $request): void
     {
-        return $this->collector->getData();
+        $response = $this->router->dispatch($request);
+
+        (new SapiEmitter)->emit($response);
     }
 }

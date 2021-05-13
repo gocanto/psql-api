@@ -5,36 +5,46 @@ declare(strict_types=1);
 namespace Gocanto\PSQL;
 
 use Gocanto\PSQL\Http\Router;
-use Gocanto\PSQL\Http\RouterResolver;
-use Illuminate\Container\Container;
-use Phroute\Phroute\Dispatcher;
-use Phroute\Phroute\RouteCollector;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Throwable;
+use Gocanto\PSQL\Provider\AppServiceProvider;
+use Gocanto\PSQL\Provider\ProviderInterface;
+use Laminas\Diactoros\ServerRequest;
+use League\Container\Container;
+use League\Route\Router as LeagueRouter;
+use League\Route\Strategy\ApplicationStrategy;
 
-class Application extends Container
+final class Application
 {
     private Router $router;
 
-    public static function create(): self
-    {
-        $app = new self();
-        $app->router = new Router(new RouteCollector());
+    /** @var ProviderInterface[] */
+    private array $providers = [
+        AppServiceProvider::class,
+    ];
 
-        return $app;
+    public function __construct(private Container $container)
+    {
+        $this->registerProviders();
+        $this->registerRoutes();
     }
 
-    public function handle(Request $request): Response
+    private function registerProviders(): void
     {
-        $dispatcher = new Dispatcher($this->router->getData(), new RouterResolver(Container::getInstance()));
-
-        try {
-            $content = $dispatcher->dispatch($request->getRealMethod(), parse_url($request->getUri(), PHP_URL_PATH));
-        } catch (Throwable $throwable) {
-            return new Response(Whoops::render($throwable), Response::HTTP_INTERNAL_SERVER_ERROR);
+        foreach ($this->providers as $provider) {
+            $abstract = new $provider($this->container);
+            $abstract->register();
         }
+    }
 
-        return $content instanceof Response ? $content : new Response($content);
+    private function registerRoutes(): void
+    {
+        $strategy = new ApplicationStrategy();
+        $strategy->setContainer($this->container);
+
+        $this->router = new Router(new LeagueRouter(), $strategy);
+    }
+
+    public function handle(ServerRequest $request): void
+    {
+        $this->router->dispatch($request);
     }
 }

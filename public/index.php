@@ -5,12 +5,21 @@ declare(strict_types=1);
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use Gocanto\PSQL\Application;
-use Symfony\Component\HttpFoundation\Request;
+use Gocanto\PSQL\Whoops;
+use Laminas\Diactoros\Response\HtmlResponse;
+use Laminas\Diactoros\ServerRequestFactory;
+use League\Container\Container;
 
-$application = Application::create();
+$app = new Application(new Container());
 
-$response = $application->handle(
-    Request::createFromGlobals()
-);
+try {
+    $app->handle(
+        ServerRequestFactory::fromGlobals($_SERVER, $_GET, $_POST, $_COOKIE, $_FILES)
+    );
+} catch (Throwable $throwable) {
+    $response = new HtmlResponse(Whoops::render($throwable), 200, [
+        'Content-Type' => ['application/xhtml+xml']
+    ]);
 
-$response->send();
+    echo $response->getBody()->getContents();
+}
