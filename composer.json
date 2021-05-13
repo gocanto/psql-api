@@ -23,6 +23,11 @@
   },
   "require": {
     "php": ">=8.0",
+    "symfony/http-foundation": "^5.2",
+    "symfony/routing": "^5.2"
+  },
+  "require-dev": {
+    "roave/security-advisories": "dev-latest",
     "mockery/mockery": "^1.4",
     "phpunit/phpunit": "^9.5"
   },
