@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Gocanto\PSQL;
 
 use Gocanto\PSQL\Http\Router;
+use Gocanto\PSQL\Http\RouterResolver;
 use Illuminate\Container\Container;
 use Phroute\Phroute\Dispatcher;
+use Phroute\Phroute\RouteCollector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
@@ -18,20 +20,14 @@ class Application extends Container
     public static function create(): self
     {
         $app = new self();
-
-        $app->registerRoutes();
+        $app->router = new Router(new RouteCollector());
 
         return $app;
     }
 
-    private function registerRoutes(): void
-    {
-        $this->router = new Router($this);
-    }
-
     public function handle(Request $request): Response
     {
-        $dispatcher = new Dispatcher($this->router->getData());
+        $dispatcher = new Dispatcher($this->router->getData(), new RouterResolver(Container::getInstance()));
 
         try {
             $content = $dispatcher->dispatch($request->getRealMethod(), parse_url($request->getUri(), PHP_URL_PATH));

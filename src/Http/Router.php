@@ -4,29 +4,25 @@ declare(strict_types=1);
 
 namespace Gocanto\PSQL\Http;
 
-use Illuminate\Container\Container;
+use Gocanto\PSQL\Http\Controllers\Cars\IndexController;
 use Phroute\Phroute\RouteCollector;
 use Phroute\Phroute\RouteDataArray;
 
 final class Router
 {
-    private RouteCollector $collector;
-    private Container $container;
-
-    public function __construct(Container $container)
+    public function __construct(private RouteCollector $collector)
     {
-        $this->container = $container;
-        $this->collector = new RouteCollector();
-
-        $this->registrar();
+        $this->registerCarsRoutes();
     }
 
-    private function registrar(): void
+    private function registerCarsRoutes(): void
     {
         $this->collector->group(['prefix' => 'api'], function (RouteCollector $router) {
             $router->get('/', function() {
                 return 'This route responds to any method (POST, GET, DELETE etc...) at the URI /example';
             });
+
+            $router->get('/cars', [IndexController::class, 'handle']);
         });
     }
 

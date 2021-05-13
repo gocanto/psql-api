@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 namespace Gocanto\PSQL\Http\Controllers\Cars;
 
+use Gocanto\PSQL\Repository\CarsRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class IndexController
+final class IndexController
 {
-    public function __invoke(): JsonResponse
+    public function __construct(private CarsRepository $cars)
     {
-        return new JsonResponse('ok');
+    }
+
+    public function handle(): JsonResponse
+    {
+        return new JsonResponse($this->cars->all());
     }
 }
