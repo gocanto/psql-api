@@ -22,9 +22,9 @@
     "issues": "https://github.com/gocanto/psql-api/issues"
   },
   "require": {
-    "php": ">=8.0"
-  },
-  "require-dev": {
+    "php": ">=8.0",
+    "mockery/mockery": "^1.4",
+    "phpunit/phpunit": "^9.5"
   },
   "autoload": {
     "psr-4": {
