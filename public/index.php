@@ -8,16 +8,17 @@ use Gocanto\PSQL\Http\Routes;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
-use Symfony\Component\Routing\Matcher\UrlMatcher;
+use Symfony\Component\Routing\Matcher\CompiledUrlMatcher;
 use Symfony\Component\Routing\RequestContext;
 
 $request = Request::createFromGlobals();
 
 $context = new RequestContext();
 $context->fromRequest($request);
-$matcher = new UrlMatcher(Routes::make(), $context);
 
 try {
+    $matcher = new CompiledUrlMatcher(Routes::compiled(), $context);
+
     extract($matcher->match($request->getPathInfo()), EXTR_SKIP);
     ob_start();
     include sprintf(__DIR__ . '/../src/pages/%s.php', $_route);

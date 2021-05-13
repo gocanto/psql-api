@@ -4,17 +4,31 @@ declare(strict_types=1);
 
 namespace Gocanto\PSQL\Http;
 
+use Exception;
+use Symfony\Component\Routing\Matcher\Dumper\CompiledUrlMatcherDumper;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
-class Routes
+final class Routes
 {
-    public static function make(): RouteCollection
+    /**
+     * @throws Exception
+     */
+    public static function compiled(): array
     {
-        $routes = new RouteCollection();
+        $collection = new RouteCollection();
 
-        $routes->add('hello', new Route('/hello/{name}', ['name' => 'World']));
+        self::registerCars($collection);
 
-        return $routes;
+        return (new CompiledUrlMatcherDumper($collection))->getCompiledRoutes();
+    }
+
+    private static function registerCars(RouteCollection $collection): void
+    {
+        $collection->add('cars', new Route('/cars'));
+    }
+
+    private function __construct()
+    {
     }
 }
