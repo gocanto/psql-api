@@ -23,13 +23,15 @@
   },
   "require": {
     "php": ">=8.0",
-    "symfony/http-foundation": "^5.2",
-    "symfony/routing": "^5.2"
+    "illuminate/container": "^8.41",
+    "phroute/phroute": "^2.1",
+    "symfony/http-foundation": "^5.2"
   },
   "require-dev": {
-    "roave/security-advisories": "dev-latest",
+    "filp/whoops": "^2.12",
     "mockery/mockery": "^1.4",
-    "phpunit/phpunit": "^9.5"
+    "phpunit/phpunit": "^9.5",
+    "roave/security-advisories": "dev-latest"
   },
   "autoload": {
     "psr-4": {

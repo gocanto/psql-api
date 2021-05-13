@@ -4,30 +4,13 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use Gocanto\PSQL\Http\Routes;
+use Gocanto\PSQL\Application;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Exception\ResourceNotFoundException;
-use Symfony\Component\Routing\Matcher\CompiledUrlMatcher;
-use Symfony\Component\Routing\RequestContext;
 
-$request = Request::createFromGlobals();
+$application = Application::create();
 
-$context = new RequestContext();
-$context->fromRequest($request);
-
-try {
-    $matcher = new CompiledUrlMatcher(Routes::compiled(), $context);
-
-    extract($matcher->match($request->getPathInfo()), EXTR_SKIP);
-    ob_start();
-    include sprintf(__DIR__ . '/../src/pages/%s.php', $_route);
-
-    $response = new Response(ob_get_clean());
-} catch (ResourceNotFoundException $exception) {
-    $response = new Response('Not Found', 404);
-} catch (Exception $exception) {
-    $response = new Response('An error occurred', 500);
-}
+$response = $application->handle(
+    Request::createFromGlobals()
+);
 
 $response->send();
