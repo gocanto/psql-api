@@ -1,0 +1,48 @@
+{
+  "license": "MIT",
+  "name": "gocanto/psql-api",
+  "homepage": "https://github.com/gocanto/psql-api",
+  "type": "php-bundle",
+  "description": "Simple PSQL API.",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "keywords": [
+    "php",
+    "psql",
+    "api"
+  ],
+  "authors": [
+    {
+      "name": "Gustavo Ocanto",
+      "email": "gustavoocanto@gmail.com"
+    }
+  ],
+  "support": {
+    "source": "https://github.com/gocanto/psql-api",
+    "issues": "https://github.com/gocanto/psql-api/issues"
+  },
+  "require": {
+    "php": ">=8.0"
+  },
+  "require-dev": {
+  },
+  "autoload": {
+    "psr-4": {
+      "Gocanto\\PSQL\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Gocanto\\PSQL\\Tests\\": "tests"
+    }
+  },
+  "config": {
+    "sort-packages": true,
+    "optimize-autoloader": true
+  },
+  "scripts": {
+    "test": [
+      "php vendor/bin/phpunit --testsuite=Unit"
+    ]
+  }
+}
