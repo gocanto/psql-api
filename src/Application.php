@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace Gocanto\PSQL;
 
 use Dotenv\Dotenv;
-use Gocanto\PSQL\Exception\DomainException;
 use Gocanto\PSQL\Http\Router;
 use Gocanto\PSQL\Provider\AppServiceProvider;
 use Gocanto\PSQL\Provider\ProviderInterface;
 use Laminas\Diactoros\Response\HtmlResponse;
+use Laminas\Diactoros\Response\JsonResponse;
 use Laminas\Diactoros\ServerRequest;
 use League\Container\Container;
-use League\Route\Http\Exception\NotFoundException;
 use League\Route\Router as LeagueRouter;
 use League\Route\Strategy\ApplicationStrategy;
 use Throwable;
@@ -20,14 +19,13 @@ use Throwable;
 final class Application
 {
     private Router $router;
+    private Env $env;
+    private Container $container;
 
-    /** @var ProviderInterface[] */
-    private array $providers = [
-        AppServiceProvider::class,
-    ];
-
-    public function __construct(private Env $env, private Container $container)
+    public function __construct(Env $env, Container $container)
     {
+        $this->env = $env;
+        $this->container = $container;
     }
 
     public function boot(): void
@@ -37,13 +35,12 @@ final class Application
         $this->registerRoutes();
     }
 
-    /**
-     * @throws NotFoundException
-     */
     public function terminate(Throwable $throwable): void
     {
         if ($this->isProd()) {
-            throw new NotFoundException('Not Found', DomainException::fromThrowable($throwable));
+            echo (new JsonResponse('Not Found', 404))->getBody()->getContents();
+
+            return;
         }
 
         $response = new HtmlResponse(Whoops::render($throwable), 200, [
@@ -60,8 +57,13 @@ final class Application
 
     private function registerProviders(): void
     {
+        /** @var ProviderInterface[] $providers */
+        $providers = [
+            AppServiceProvider::class,
+        ];
+
         /** @var ProviderInterface $abstract */
-        foreach ($this->providers as $provider) {
+        foreach ($providers as $provider) {
             $abstract = new $provider();
 
             $abstract->setContainer($this->container);

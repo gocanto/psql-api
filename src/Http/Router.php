@@ -12,8 +12,11 @@ use League\Route\Strategy\ApplicationStrategy;
 
 final class Router
 {
-    public function __construct(private LeagueRouter $router, ApplicationStrategy $strategy)
+    private LeagueRouter $router;
+
+    public function __construct(LeagueRouter $router, ApplicationStrategy $strategy)
     {
+        $this->router = $router;
         $this->router->setStrategy($strategy);
 
         $this->registerCarsRoutes();
