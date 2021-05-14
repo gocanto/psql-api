@@ -7,6 +7,7 @@ namespace Gocanto\PSQL\Http;
 use Gocanto\PSQL\Http\Controllers\Cars\IndexController;
 use Laminas\Diactoros\ServerRequest;
 use Laminas\HttpHandlerRunner\Emitter\SapiEmitter;
+use League\Route\RouteGroup;
 use League\Route\Router as LeagueRouter;
 use League\Route\Strategy\ApplicationStrategy;
 
@@ -24,7 +25,9 @@ final class Router
 
     private function registerCarsRoutes(): void
     {
-        $this->router->map('GET', '/cars', IndexController::class);
+        $this->router->group('api', static function (RouteGroup $router): void {
+            $router->map('GET', '/cars', IndexController::class);
+        });
     }
 
     public function dispatch(ServerRequest $request): void
