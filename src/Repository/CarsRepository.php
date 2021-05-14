@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Gocanto\PSQL\Repository;
 
+use Carbon\CarbonImmutable;
 use Gocanto\PSQL\DB\Connection;
 use Gocanto\PSQL\DB\DatabaseException;
 use Gocanto\PSQL\Entity\Car;
@@ -59,6 +60,11 @@ class CarsRepository
 
     public function update(int $id, array $attributes): Car
     {
+        $attribute[] = [
+            'value' => CarbonImmutable::now()->toDateTimeString(),
+            'field' => 'model_date_modified',
+        ];
+
         $statement = '';
 
         foreach ($attributes as $attribute) {
@@ -78,6 +84,14 @@ class CarsRepository
         $query->execute();
 
         return $this->findById($id);
+    }
+
+    public function delete(Car $car): bool
+    {
+        $query = $this->db->prepare('DELETE FROM cars WHERE id = :id');
+        $query->bindValue(':id', $car->getId());
+
+        return $query->execute();
     }
 
     private function mapCarData(array $row): array

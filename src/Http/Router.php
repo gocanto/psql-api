@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Gocanto\PSQL\Http;
 
+use Gocanto\PSQL\Http\Controllers\Cars\DeleteController;
 use Gocanto\PSQL\Http\Controllers\Cars\IndexController;
 use Gocanto\PSQL\Http\Controllers\Cars\ShowController;
 use Gocanto\PSQL\Http\Controllers\Cars\UpdateController;
@@ -31,6 +32,7 @@ final class Router
             $router->map('GET', '/cars', IndexController::class);
             $router->map('GET', '/cars/{id:number}', ShowController::class);
             $router->map('PUT', '/cars/{id:number}', UpdateController::class);
+            $router->map('DELETE', '/cars/{id:number}', DeleteController::class);
         });
     }
 

@@ -7,6 +7,7 @@ namespace Gocanto\PSQL\Provider;
 use Gocanto\PSQL\DB\Config;
 use Gocanto\PSQL\DB\Connection;
 use Gocanto\PSQL\Env;
+use Gocanto\PSQL\Http\Controllers\Cars\DeleteController;
 use Gocanto\PSQL\Http\Controllers\Cars\IndexController;
 use Gocanto\PSQL\Http\Controllers\Cars\ShowController;
 use Gocanto\PSQL\Http\Controllers\Cars\UpdateController;
@@ -38,6 +39,7 @@ final class AppServiceProvider implements ProviderInterface
         $this->container->add(IndexController::class)->addArgument(CarsRepository::class);
         $this->container->add(ShowController::class)->addArgument(CarsRepository::class);
         $this->container->add(UpdateController::class)->addArgument(CarsRepository::class);
+        $this->container->add(DeleteController::class)->addArgument(CarsRepository::class);
 
         $this->container->add(CarsRepository::class)->addArgument(new Connection(new Config($this->env)));
     }
