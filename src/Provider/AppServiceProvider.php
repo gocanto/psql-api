@@ -8,6 +8,7 @@ use Gocanto\PSQL\DB\Config;
 use Gocanto\PSQL\DB\Connection;
 use Gocanto\PSQL\Env;
 use Gocanto\PSQL\Http\Controllers\Cars\IndexController;
+use Gocanto\PSQL\Http\Controllers\Cars\ShowController;
 use Gocanto\PSQL\Repository\CarsRepository;
 use League\Container\Container;
 
@@ -18,8 +19,7 @@ final class AppServiceProvider implements ProviderInterface
 
     public function register(): void
     {
-        $this->container->add(IndexController::class)->addArgument(CarsRepository::class);
-        $this->container->add(CarsRepository::class)->addArgument(new Connection(new Config($this->env)));
+        $this->registerBindings();
     }
 
     public function setEnv(Env $env): void
@@ -30,5 +30,13 @@ final class AppServiceProvider implements ProviderInterface
     public function setContainer(Container $container): void
     {
         $this->container = $container;
+    }
+
+    private function registerBindings(): void
+    {
+        $this->container->add(IndexController::class)->addArgument(CarsRepository::class);
+        $this->container->add(ShowController::class)->addArgument(CarsRepository::class);
+
+        $this->container->add(CarsRepository::class)->addArgument(new Connection(new Config($this->env)));
     }
 }

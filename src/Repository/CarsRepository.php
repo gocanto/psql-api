@@ -36,17 +36,37 @@ class CarsRepository
 
         $cars = new CarsCollection();
         while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-            $cars->add(new Car([
-                'id' => $row['id'],
-                'model' => $row['model_name'],
-                'type' => $row['model_type'],
-                'brand' => $row['model_brand'],
-                'year' => $row['model_year'],
-                'created_at' => $row['model_date_added'],
-                'updated_at' => $row['model_date_modified'],
-            ]));
+            $cars->add(new Car($this->mapCarData($row)));
         }
 
         return $cars;
+    }
+
+    public function findById(int $id): ?Car
+    {
+        $query = $this->db->prepare('SELECT * FROM cars WHERE id = :id LIMIT 1');
+        $query->bindValue(':id', $id);
+        $query->execute();
+
+        $row = $query->fetch(PDO::FETCH_ASSOC);
+
+        if ($row === false) {
+            return null;
+        }
+
+        return new Car($this->mapCarData($row));
+    }
+
+    private function mapCarData(array $row): array
+    {
+        return [
+            'id' => $row['id'],
+            'model' => $row['model_name'],
+            'type' => $row['model_type'],
+            'brand' => $row['model_brand'],
+            'year' => $row['model_year'],
+            'created_at' => $row['model_date_added'],
+            'updated_at' => $row['model_date_modified'],
+        ];
     }
 }

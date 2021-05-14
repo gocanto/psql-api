@@ -23,27 +23,27 @@ final class Config
         $this->port = $env->get('DB_PORT');
     }
 
-    public function getHost(): mixed
+    public function getHost(): string
     {
         return $this->host;
     }
 
-    public function getName(): mixed
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function getUser(): mixed
+    public function getUser(): string
     {
         return $this->user;
     }
 
-    public function getPass(): mixed
+    public function getPass(): string
     {
         return $this->pass;
     }
 
-    public function getPort(): mixed
+    public function getPort(): string
     {
         return $this->port;
     }
