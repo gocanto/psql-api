@@ -1,0 +1,139 @@
+{
+	"info": {
+		"_postman_id": "d631dd73-f68f-4c3f-9579-c9c321a722a9",
+		"name": "psql-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "index",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://psqlapi.local/api/cars",
+					"protocol": "http",
+					"host": [
+						"psqlapi",
+						"local"
+					],
+					"path": [
+						"api",
+						"cars"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "show",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://psqlapi.local/api/cars/1",
+					"protocol": "http",
+					"host": [
+						"psqlapi",
+						"local"
+					],
+					"path": [
+						"api",
+						"cars",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"model\": \"foo\",\n    \"type\": \"bar\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://psqlapi.local/api/cars/38",
+					"protocol": "http",
+					"host": [
+						"psqlapi",
+						"local"
+					],
+					"path": [
+						"api",
+						"cars",
+						"38"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "store",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"model\": \"model_name\",\n    \"type\": \"model_type\",\n    \"brand\": \"model_brand\",\n    \"year\": \"2006\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://psqlapi.local/api/cars",
+					"protocol": "http",
+					"host": [
+						"psqlapi",
+						"local"
+					],
+					"path": [
+						"api",
+						"cars"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"gus\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://psqlapi.local/api/cars/1",
+					"protocol": "http",
+					"host": [
+						"psqlapi",
+						"local"
+					],
+					"path": [
+						"api",
+						"cars",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
