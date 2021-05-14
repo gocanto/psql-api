@@ -57,6 +57,9 @@ final class StoreController
             throw new DomainException('The given data is invalid.');
         }
 
+        //@todo
+        //it would be good to have some basic validations here.
+
         return $attributes;
     }
 }
