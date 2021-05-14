@@ -4,18 +4,20 @@ declare(strict_types=1);
 
 namespace Gocanto\PSQL\DB;
 
-use Gocanto\PSQL\Exception\DomainException;
 use PDO;
 use PDOException;
 
 class Connection
 {
-    public function __construct(private Config $config)
+    private Config $config;
+
+    public function __construct(Config $config)
     {
+        $this->config = $config;
     }
 
     /**
-     * @throws DomainException
+     * @throws DatabaseException
      */
     public function connect(): PDO
     {
@@ -27,7 +29,7 @@ class Connection
                 [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
             );
         } catch (PDOException $e) {
-            throw new DomainException($e->getMessage(), $e->getCode(), $e);
+            throw new DatabaseException($e->getMessage(), (int) $e->getCode(), $e);
         }
 
         return $pdo;

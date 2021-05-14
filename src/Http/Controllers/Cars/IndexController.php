@@ -7,19 +7,23 @@ namespace Gocanto\PSQL\Http\Controllers\Cars;
 use Gocanto\PSQL\Repository\CarsRepository;
 use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 
 final class IndexController
 {
-    public function __construct(private CarsRepository $cars)
+    private CarsRepository $cars;
+
+    public function __construct(CarsRepository $cars)
     {
+        $this->cars = $cars;
     }
 
-    public function __invoke(ServerRequestInterface $request): ResponseInterface
+    public function __invoke(): ResponseInterface
     {
+        $cars = $this->cars->getAll();
+
         return new JsonResponse([
-            'cars' => $this->cars->all(),
-            'request' => $request->getQueryParams(),
+            'total' => $cars->count(),
+            'data' => $cars->toArray(),
         ]);
     }
 }

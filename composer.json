@@ -30,6 +30,7 @@
         "laminas/laminas-httphandlerrunner": "^1.4",
         "league/container": "^3.3",
         "league/route": "^5.0",
+        "nesbot/carbon": "^2.48",
         "vlucas/phpdotenv": "^5.3"
     },
     "require-dev": {
