@@ -12,11 +12,11 @@ final class Whoops
 {
     public static function render(Throwable $throwable): string
     {
-        $whoops = new Run;
+        $whoops = new Run();
 
         $whoops->allowQuit(false);
         $whoops->writeToOutput(false);
-        $whoops->pushHandler(new PrettyPageHandler);
+        $whoops->pushHandler(new PrettyPageHandler());
 
         return $whoops->handleException($throwable);
     }

@@ -1,60 +1,68 @@
 {
-  "license": "MIT",
-  "name": "gocanto/psql-api",
-  "homepage": "https://github.com/gocanto/psql-api",
-  "type": "php-bundle",
-  "description": "Simple PSQL API.",
-  "minimum-stability": "dev",
-  "prefer-stable": true,
-  "keywords": [
-    "php",
-    "psql",
-    "api"
-  ],
-  "authors": [
-    {
-      "name": "Gustavo Ocanto",
-      "email": "gustavoocanto@gmail.com"
-    }
-  ],
-  "support": {
-    "source": "https://github.com/gocanto/psql-api",
-    "issues": "https://github.com/gocanto/psql-api/issues"
-  },
-  "require": {
-    "php": ">=8.0",
-    "ext-pdo": "*",
-    "ext-pgsql": "*",
-    "illuminate/container": "^8.41",
-    "laminas/laminas-diactoros": "^2.5",
-    "laminas/laminas-httphandlerrunner": "^1.4",
-    "league/container": "^3.3",
-    "league/route": "^5.0",
-    "vlucas/phpdotenv": "^5.3"
-  },
-  "require-dev": {
-    "filp/whoops": "^2.12",
-    "mockery/mockery": "^1.4",
-    "phpunit/phpunit": "^9.5",
-    "roave/security-advisories": "dev-latest"
-  },
-  "autoload": {
-    "psr-4": {
-      "Gocanto\\PSQL\\": "src"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Gocanto\\PSQL\\Tests\\": "tests"
-    }
-  },
-  "config": {
-    "sort-packages": true,
-    "optimize-autoloader": true
-  },
+    "license": "MIT",
+    "name": "gocanto/psql-api",
+    "homepage": "https://github.com/gocanto/psql-api",
+    "type": "php-bundle",
+    "description": "Simple PSQL API.",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "keywords": [
+        "php",
+        "psql",
+        "api"
+    ],
+    "authors": [
+        {
+            "name": "Gustavo Ocanto",
+            "email": "gustavoocanto@gmail.com"
+        }
+    ],
+    "support": {
+        "source": "https://github.com/gocanto/psql-api",
+        "issues": "https://github.com/gocanto/psql-api/issues"
+    },
+    "require": {
+        "php": ">=8.0",
+        "ext-pdo": "*",
+        "ext-pgsql": "*",
+        "illuminate/container": "^8.41",
+        "laminas/laminas-diactoros": "^2.5",
+        "laminas/laminas-httphandlerrunner": "^1.4",
+        "league/container": "^3.3",
+        "league/route": "^5.0",
+        "vlucas/phpdotenv": "^5.3"
+    },
+    "require-dev": {
+        "filp/whoops": "^2.12",
+        "mockery/mockery": "^1.4",
+        "phpunit/phpunit": "^9.5",
+        "roave/security-advisories": "dev-latest",
+        "phpmd/phpmd": "^2.10",
+        "squizlabs/php_codesniffer": "^3.6",
+        "vimeo/psalm": "^4.7",
+        "friendsofphp/php-cs-fixer": "^2.18.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Gocanto\\PSQL\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Gocanto\\PSQL\\Tests\\": "tests"
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "optimize-autoloader": true,
+        "preferred-install": "dist"
+    },
   "scripts": {
-    "test": [
-      "php vendor/bin/phpunit --testsuite=Unit"
-    ]
+      "fix-style": [
+          "php vendor/bin/php-cs-fixer fix ./src ./public ./tests --config=.php-cs-fixer.php"
+      ],
+      "test": [
+          "php vendor/bin/phpunit --testsuite=Unit"
+      ]
   }
 }

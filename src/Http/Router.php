@@ -28,6 +28,6 @@ final class Router
     {
         $response = $this->router->dispatch($request);
 
-        (new SapiEmitter)->emit($response);
+        (new SapiEmitter())->emit($response);
     }
 }

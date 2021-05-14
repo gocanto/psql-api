@@ -47,7 +47,7 @@ final class Application
         }
 
         $response = new HtmlResponse(Whoops::render($throwable), 200, [
-            'Content-Type' => ['application/xhtml+xml']
+            'Content-Type' => ['application/xhtml+xml'],
         ]);
 
         echo $response->getBody()->getContents();
