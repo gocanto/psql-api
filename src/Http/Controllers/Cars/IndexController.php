@@ -19,7 +19,7 @@ final class IndexController
     {
         return new JsonResponse([
             'cars' => $this->cars->all(),
-            $request->getQueryParams(),
+            'request' => $request->getQueryParams(),
         ]);
     }
 }

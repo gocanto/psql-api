@@ -23,11 +23,14 @@
   },
   "require": {
     "php": ">=8.0",
+    "ext-pdo": "*",
+    "ext-pgsql": "*",
     "illuminate/container": "^8.41",
     "laminas/laminas-diactoros": "^2.5",
     "laminas/laminas-httphandlerrunner": "^1.4",
     "league/container": "^3.3",
-    "league/route": "^5.0"
+    "league/route": "^5.0",
+    "vlucas/phpdotenv": "^5.3"
   },
   "require-dev": {
     "filp/whoops": "^2.12",
