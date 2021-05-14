@@ -43,7 +43,7 @@ class CarsRepository
         return $cars;
     }
 
-    public function findById(int $id): ?Car
+    public function findById(int | string $id): ?Car
     {
         $query = $this->db->prepare('SELECT * FROM cars WHERE id = :id LIMIT 1');
         $query->bindValue(':id', $id);
@@ -56,6 +56,36 @@ class CarsRepository
         }
 
         return new Car($this->mapCarData($row));
+    }
+
+    public function create(array $attributes): Car
+    {
+        $now = CarbonImmutable::now()->toDateTimeString();
+
+        $attributes[] = ['value' => $now, 'field' => 'model_date_modified'];
+        $attributes[] = ['value' => $now, 'field' => 'model_date_added'];
+
+        $columns = '';
+        $values = '';
+
+        foreach ($attributes as $attribute) {
+            $columns .= $attribute['field'] . ', ';
+            $values .= ':' . $attribute['field'] . ', ';
+        }
+
+        $values = \trim($values, ', ');
+        $columns = \trim($columns, ', ');
+
+        $query = $this->db->prepare("INSERT INTO cars ($columns) VALUES ({$values})");
+
+        foreach ($attributes as $attribute) {
+            $query->bindValue(':' . $attribute['field'], $attribute['value']);
+        }
+
+        $query->execute();
+        $id = $this->db->lastInsertId();
+
+        return $this->findById($id);
     }
 
     public function update(int $id, array $attributes): Car

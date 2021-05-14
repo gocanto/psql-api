@@ -25,6 +25,7 @@
         "php": ">=8.0",
         "ext-pdo": "*",
         "ext-pgsql": "*",
+        "illuminate/collections": "^8.41",
         "illuminate/container": "^8.41",
         "laminas/laminas-diactoros": "^2.5",
         "laminas/laminas-httphandlerrunner": "^1.4",

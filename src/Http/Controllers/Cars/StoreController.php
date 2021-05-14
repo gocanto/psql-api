@@ -7,12 +7,13 @@ namespace Gocanto\PSQL\Http\Controllers\Cars;
 use Gocanto\PSQL\Exception\DomainException;
 use Gocanto\PSQL\Repository\CarsRepository;
 use Gocanto\PSQL\Repository\Sanitize;
+use Illuminate\Support\Collection;
 use Laminas\Diactoros\Response\JsonResponse;
 use Laminas\Diactoros\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-final class UpdateController
+final class StoreController
 {
     private CarsRepository $cars;
 
@@ -26,19 +27,10 @@ final class UpdateController
      */
     public function __invoke(ServerRequestInterface $request): ResponseInterface
     {
-        $id = (int) $request->getAttribute('id');
-
-        $car = $this->cars->findById($id);
-
-        if ($car === null) {
-            return new JsonResponse([
-                'error' => 'Not Found',
-                'message' => "The given car id [$id] is invalid.",
-            ], 404);
-        }
-
         try {
-            $data = Sanitize::parse($request->getBody()->getContents());
+            $data = $this->validated(
+                Sanitize::parse($request->getBody()->getContents())
+            );
         } catch (DomainException $e) {
             return new JsonResponse([
                 'error' => $e->getMessage(),
@@ -46,11 +38,25 @@ final class UpdateController
             ], 403);
         }
 
-        $car = $this->cars->update((int) $request->getAttribute('id'), $data);
-
         return new JsonResponse([
-            'message' => "The given car [$id] was updated successfully.",
-            'data' => $car->toArray(),
+            'message' => 'The given car was created successfully.',
+            'data' => $this->cars->create($data)->toArray(),
         ]);
+    }
+
+    /**
+     * @throws DomainException
+     */
+    private function validated(array $attributes): array
+    {
+        $required = ['model_name', 'model_type', 'model_brand', 'model_year'];
+
+        $data = Collection::make($attributes)->pluck('field')->diff($required);
+
+        if ($data->isNotEmpty()) {
+            throw new DomainException('The given data is invalid.');
+        }
+
+        return $attributes;
     }
 }

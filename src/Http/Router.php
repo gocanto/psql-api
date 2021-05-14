@@ -7,6 +7,7 @@ namespace Gocanto\PSQL\Http;
 use Gocanto\PSQL\Http\Controllers\Cars\DeleteController;
 use Gocanto\PSQL\Http\Controllers\Cars\IndexController;
 use Gocanto\PSQL\Http\Controllers\Cars\ShowController;
+use Gocanto\PSQL\Http\Controllers\Cars\StoreController;
 use Gocanto\PSQL\Http\Controllers\Cars\UpdateController;
 use Laminas\Diactoros\ServerRequest;
 use Laminas\HttpHandlerRunner\Emitter\SapiEmitter;
@@ -29,6 +30,7 @@ final class Router
     private function registerCarsRoutes(): void
     {
         $this->router->group('api', static function (RouteGroup $router): void {
+            $router->map('POST', '/cars', StoreController::class);
             $router->map('GET', '/cars', IndexController::class);
             $router->map('GET', '/cars/{id:number}', ShowController::class);
             $router->map('PUT', '/cars/{id:number}', UpdateController::class);
