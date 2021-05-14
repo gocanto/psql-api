@@ -57,6 +57,29 @@ class CarsRepository
         return new Car($this->mapCarData($row));
     }
 
+    public function update(int $id, array $attributes): Car
+    {
+        $statement = '';
+
+        foreach ($attributes as $attribute) {
+            $statement .= "{$attribute['field']} = :{$attribute['field']}, ";
+        }
+
+        $statement = \rtrim($statement, ', ');
+        $statement = "UPDATE cars SET {$statement} WHERE id = :id";
+
+        $query = $this->db->prepare($statement);
+
+        foreach ($attributes as $attribute) {
+            $query->bindValue(':' . $attribute['field'], $attribute['value']);
+        }
+
+        $query->bindValue(':id', $id);
+        $query->execute();
+
+        return $this->findById($id);
+    }
+
     private function mapCarData(array $row): array
     {
         return [
