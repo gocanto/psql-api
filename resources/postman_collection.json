@@ -31,7 +31,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://psqlapi.local/api/cars/1",
+					"raw": "http://psqlapi.local/api/cars/2",
 					"protocol": "http",
 					"host": [
 						"psqlapi",
@@ -40,7 +40,7 @@
 					"path": [
 						"api",
 						"cars",
-						"1"
+						"2"
 					]
 				}
 			},
@@ -83,7 +83,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"model\": \"model_name\",\n    \"type\": \"model_type\",\n    \"brand\": \"model_brand\",\n    \"year\": \"2006\"\n}",
+					"raw": "{\n    \"model\": \"guacara\",\n    \"type\": \"venezuela\",\n    \"brand\": \"carabobo\",\n    \"year\": \"2006\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -120,7 +120,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://psqlapi.local/api/cars/1",
+					"raw": "http://psqlapi.local/api/cars/50",
 					"protocol": "http",
 					"host": [
 						"psqlapi",
@@ -129,7 +129,7 @@
 					"path": [
 						"api",
 						"cars",
-						"1"
+						"50"
 					]
 				}
 			},
