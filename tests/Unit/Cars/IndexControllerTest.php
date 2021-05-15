@@ -26,6 +26,12 @@ class IndexControllerTest extends TestCase
         $this->repository = Mock::carsRepository();
     }
 
+    protected function tearDown(): void
+    {
+        Mockery::close();
+        CarbonImmutable::setTestNow();
+    }
+
     /**
      * @test
      */

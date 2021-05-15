@@ -17,7 +17,16 @@ final class Mock
         $date ??= CarbonImmutable::now();
 
         $collection = new CarsCollection();
-        $car = new Car([
+        $collection->add(self::car($date));
+
+        return $collection;
+    }
+
+    public static function car(?CarbonImmutable $date = null): Car
+    {
+        $date ??= CarbonImmutable::now();
+
+        return new Car([
             'id' => \mt_rand(),
             'model' => '_model_',
             'type' => '_type',
@@ -26,10 +35,6 @@ final class Mock
             'created_at' => $date->toDateTimeString(),
             'updated_at' => $date->toDateTimeString(),
         ]);
-
-        $collection->add($car);
-
-        return $collection;
     }
 
     public static function carsRepository(): CarsRepository | Mockery\MockInterface | Mockery\LegacyMockInterface

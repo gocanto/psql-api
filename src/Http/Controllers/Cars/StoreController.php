@@ -41,7 +41,7 @@ final class StoreController
         return new JsonResponse([
             'message' => 'The given car was created successfully.',
             'data' => $this->cars->create($data)->toArray(),
-        ]);
+        ], 201);
     }
 
     /**
