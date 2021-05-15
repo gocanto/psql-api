@@ -18,13 +18,15 @@ use League\Route\Strategy\ApplicationStrategy;
 final class Router
 {
     private LeagueRouter $router;
+    private SapiEmitter $emitter;
 
-    public function __construct(LeagueRouter $router, ApplicationStrategy $strategy)
+    public function __construct(LeagueRouter $router, ApplicationStrategy $strategy, SapiEmitter $emitter)
     {
         $this->router = $router;
         $this->router->setStrategy($strategy);
 
         $this->registerCarsRoutes();
+        $this->emitter = $emitter;
     }
 
     private function registerCarsRoutes(): void
@@ -42,6 +44,6 @@ final class Router
     {
         $response = $this->router->dispatch($request);
 
-        (new SapiEmitter())->emit($response);
+        $this->emitter->emit($response);
     }
 }

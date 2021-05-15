@@ -4,32 +4,25 @@ declare(strict_types=1);
 
 namespace Gocanto\PSQL\Tests\Unit\Cars;
 
-use Carbon\CarbonImmutable;
 use Gocanto\PSQL\Http\Controllers\Cars\IndexController;
 use Gocanto\PSQL\Repository\CarsRepository;
 use Gocanto\PSQL\Tests\Mock;
+use Gocanto\PSQL\Tests\Unit\TestCase;
 use Gocanto\PSQL\Tests\Utils;
 use Laminas\Diactoros\Response\JsonResponse;
 use Mockery;
-use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * @property CarbonImmutable now
  * @property CarsRepository|Mockery\LegacyMockInterface|Mockery\MockInterface repository
  */
 class IndexControllerTest extends TestCase
 {
     protected function setUp(): void
     {
-        $this->now = CarbonImmutable::now();
-        $this->repository = Mock::carsRepository();
-    }
+        parent::setUp();
 
-    protected function tearDown(): void
-    {
-        Mockery::close();
-        CarbonImmutable::setTestNow();
+        $this->repository = Mock::carsRepository();
     }
 
     /**

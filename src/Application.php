@@ -11,6 +11,7 @@ use Gocanto\PSQL\Provider\ProviderInterface;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Laminas\Diactoros\Response\JsonResponse;
 use Laminas\Diactoros\ServerRequest;
+use Laminas\HttpHandlerRunner\Emitter\SapiEmitter;
 use League\Container\Container;
 use League\Route\Router as LeagueRouter;
 use League\Route\Strategy\ApplicationStrategy;
@@ -78,7 +79,7 @@ final class Application
         $strategy = new ApplicationStrategy();
         $strategy->setContainer($this->container);
 
-        $this->router = new Router(new LeagueRouter(), $strategy);
+        $this->router = new Router(new LeagueRouter(), $strategy, new SapiEmitter());
     }
 
     public function handle(ServerRequest $request): void
